@@ -1,4 +1,4 @@
 image-recipes
 =============
 
-Recipies for creating VM images
+Kickstart files and scripts for building minimal VM images.
