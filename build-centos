@@ -1,0 +1,25 @@
+#!/bin/bash
+
+BUILD_NAME=${1:-centos-6-x86_64}
+
+BIN_DIR=$(cd $(dirname "$0") && pwd)
+
+sudo virt-install \
+    --name $BUILD_NAME \
+    --ram 1024 \
+    --cpu host \
+    --vcpus 1 \
+    --nographics \
+    --os-type=linux \
+    --os-variant=rhel6 \
+    --location=http://mirrors.kernel.org/centos/6/os/x86_64 \
+    --initrd-inject=$BIN_DIR/$BUILD_NAME.ks \
+    --extra-args="ks=file:/$BUILD_NAME.ks text console=tty0 utf8 console=ttyS0,115200" \
+    --disk path=/var/lib/libvirt/images/$BUILD_NAME.img,size=2,bus=virtio \
+    --force \
+    --noreboot
+
+sudo virt-sysprep --no-selinux-relabel -a /var/lib/libvirt/images/$BUILD_NAME.img
+
+sudo virt-sparsify --convert qcow2 --compress /var/lib/libvirt/images/$BUILD_NAME.img $BUILD_NAME.qcow2
+
