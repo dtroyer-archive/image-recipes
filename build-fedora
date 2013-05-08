@@ -12,7 +12,7 @@ sudo virt-install \
     --vcpus 1 \
     --nographics \
     --os-type=linux \
-    --os-variant=rhel6 \
+    --os-variant=fedora18 \
     --location=http://mirrors.kernel.org/fedora/releases/18/Fedora/x86_64/os/ \
     --initrd-inject=$BIN_DIR/$BUILD_NAME.ks \
     --extra-args="ks=file:/$BUILD_NAME.ks text console=tty0 utf8 console=ttyS0,115200" \
