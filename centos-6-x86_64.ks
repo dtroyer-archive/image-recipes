@@ -52,6 +52,7 @@ logrotate
 ntp
 ntpdate
 openssh-clients
+rng-tools
 rsync
 screen
 tmpwatch
