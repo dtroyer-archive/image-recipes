@@ -9,10 +9,10 @@ skipx
 cmdline
 install
 
-# installation path
+# Installation path
 url --url=http://mirrors.kernel.org/centos/6/os/x86_64
 
-# repositories
+# Repositories
 repo --name=base --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
 repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
 repo --name=epel --baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64
