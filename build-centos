@@ -19,6 +19,13 @@ sudo virt-install \
     --force \
     --noreboot
 
+if [[ $? != 0 ]]; then
+    echo error exit
+    exit 1
+fi
+
+set -o xtrace
+
 sudo virt-sysprep --no-selinux-relabel -a /var/lib/libvirt/images/$BUILD_NAME.img
 
 sudo virt-sparsify --convert qcow2 --compress /var/lib/libvirt/images/$BUILD_NAME.img $BUILD_NAME.qcow2
