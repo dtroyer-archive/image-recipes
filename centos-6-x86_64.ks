@@ -18,10 +18,8 @@ repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
 repo --name=epel --baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64
 repo --name=cloud-init --baseurl=http://repos.fedorapeople.org/repos/openstack/cloud-init/epel-6/
 
-# Enable this for debugging
-#rootpw changeme1122
-
 # Common configuration
+rootpw --iscrypted $1$fakehash-bruteforcetocrackitnow
 lang en_US.UTF-8
 keyboard us
 timezone --utc UTC
