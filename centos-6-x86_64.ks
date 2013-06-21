@@ -36,7 +36,7 @@ selinux --permissive
 # Simple disk layout
 zerombr
 clearpart --all --initlabel
-bootloader --location=mbr
+bootloader --location=mbr --append="console=tty console=ttyS0 notsc"
 part / --size 100 --fstype ext4 --grow
 
 # Start a few things
