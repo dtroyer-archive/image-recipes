@@ -15,7 +15,7 @@ url --url=http://mirrors.kernel.org/centos/6/os/x86_64
 # Repositories
 repo --name=base --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
 repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
-repo --name=epel --baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64
+repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
 repo --name=cloud-init --baseurl=http://repos.fedorapeople.org/repos/openstack/cloud-init/epel-6/
 
 # Common configuration
@@ -29,7 +29,7 @@ auth --useshadow --enablemd5
 firstboot --disable
 poweroff
 
-# TODO(dtroyer): selinux isn't toally happy yet
+# TODO(dtroyer): selinux isn't totally happy yet
 #selinux --enforcing
 selinux --permissive
 
@@ -73,15 +73,18 @@ cloud-init
 yum clean all
 
 # Rename the default cloud-init user to 'centos'
-/usr/sbin/adduser centos
-echo -e 'centos\tALL=(ALL)\tNOPASSWD: ALL' >>/etc/sudoers.d/99-centos
-chmod 440 /etc/sudoers.d/99-centos
 
 # cloud-init 0.6 config format
 #sed -i 's/^user: ec2-user/user: centos/g' /etc/cloud/cloud.cfg
 
 # cloud-init 0.7 config format
-sed -i 's/ name: cloud-user/ name: centos/g' /etc/cloud/cloud.cfg
+#sed -i 's/ name: cloud-user/ name: centos/g' /etc/cloud/cloud.cfg
+sed -i 's/name: cloud-user/name: centos\
+    lock_passwd: True\
+    gecos: CentOS\
+    groups: \[adm, audio, cdrom, dialout, floppy, video, dip\]\
+    sudo: \[\"ALL=(ALL) NOPASSWD:ALL\"\]\
+    shell: \/bin\/bash/' /etc/cloud/cloud.cfg
 
 # Turn off additional services
 chkconfig postfix off
