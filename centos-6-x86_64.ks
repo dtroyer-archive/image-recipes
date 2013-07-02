@@ -1,7 +1,7 @@
 # This is a basic CentOS 6 spin designed to work in OpenStack and other
 # virtualized environments. It's configured with cloud-init so it will
 # take advantage of ec2-compatible metadata services for provisioning
-# ssh keys and user data. 
+# ssh keys and user data.
 
 # Basic kickstart bits
 text
@@ -60,7 +60,6 @@ epel-release
 cloud-init
 
 # Some things from @core we can do without in a minimal install
--biosdevname
 -NetworkManager
 -sendmail
 
@@ -103,7 +102,7 @@ p
 
 
 w
-" | /sbin/fdisk -c -u /dev/vda 
+" | /sbin/fdisk -c -u /dev/vda
 /sbin/e2fsck -f /dev/vda1
 /sbin/resize2fs /dev/vda1
 EOF
@@ -121,5 +120,10 @@ echo "savedefault --default=1 --once" | grub --batch
 
 # Leave behind a build stamp
 echo "build=$(date +%F.%T)" >/etc/.build
+
+# Remove udev net entries
+sed -i '/ENV{MATCHADDR}="$attr{address}"$/a\ENV{MATCHADDR}=="fa:16:3e:*", GOTO="persistent_net_generator_end"' /lib/udev/rules.d/75-persistent-net-generator.rules
+sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i '/UUID/d' /etc/sysconfig/network-scripts/ifcfg-eth0
 
 %end
