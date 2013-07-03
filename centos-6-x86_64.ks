@@ -1,7 +1,7 @@
 # This is a basic CentOS 6 spin designed to work in OpenStack and other
 # virtualized environments. It's configured with cloud-init so it will
 # take advantage of ec2-compatible metadata services for provisioning
-# ssh keys and user data. 
+# ssh keys and user data.
 
 # Basic kickstart bits
 text
@@ -89,6 +89,33 @@ sed -i 's/name: cloud-user/name: centos\
 # Turn off additional services
 chkconfig postfix off
 
+
+# Tweak udev to not auto-gen virtual network devices
+cat <<EOF >/tmp/udev.patch.1
+# ignore KVM virtual interfaces
+ENV{MATCHADDR}=="52:54:00:*", GOTO="persistent_net_generator_end"
+# ignore VMWare virtual interfaces
+ENV{MATCHADDR}=="00:0c:29:*|00:50:56:*", GOTO="persistent_net_generator_end"
+# ignore Hyper-V virtual interfaces
+ENV{MATCHADDR}=="00:15:5d:*", GOTO="persistent_net_generator_end"
+# ignore Eucalyptus virtual interfaces
+ENV{MATCHADDR}=="d0:0d:*", GOTO="persistent_net_generator_end"
+# ignore Ravello Systems virtual interfaces
+ENV{MATCHADDR}=="2c:c2:60:*", GOTO="persistent_net_generator_end"
+# ignore OpenStack default virtual interfaces
+ENV{MATCHADDR}=="fa:16:3e:*", GOTO="persistent_net_generator_end"
+
+EOF
+# sed-ism: we need to N below to make this an insert rather than an append
+sed -e '/\# do not use empty address/ {
+  h
+  r /tmp/udev.patch.1
+  g
+  N
+}' \
+  /lib/udev/rules.d/75-persistent-net-generator.rules >/etc/udev/rules.d/75-persistent-net-generator.rules
+
+
 # Set up to grow root in initramfs
 cat << EOF > 05-grow-root.sh
 #!/bin/sh
@@ -103,7 +130,7 @@ p
 
 
 w
-" | /sbin/fdisk -c -u /dev/vda 
+" | /sbin/fdisk -c -u /dev/vda
 /sbin/e2fsck -f /dev/vda1
 /sbin/resize2fs /dev/vda1
 EOF
