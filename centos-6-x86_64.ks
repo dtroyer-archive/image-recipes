@@ -58,6 +58,7 @@ wget
 
 epel-release
 cloud-init
+cloud-utils
 
 # Some things from @core we can do without in a minimal install
 -NetworkManager
@@ -95,27 +96,20 @@ cat << EOF > 05-grow-root.sh
 /bin/echo
 /bin/echo Resizing root filesystem
 
-/bin/echo "d
-n
-p
-1
-
-
-w
-" | /sbin/fdisk -c -u /dev/vda
-/sbin/e2fsck -f /dev/vda1
-/sbin/resize2fs /dev/vda1
+growpart --fudge 20480 -v /dev/vda 1
+e2fsck -f /dev/vda1
+resize2fs /dev/vda1
 EOF
 
 chmod +x 05-grow-root.sh
 
-dracut --force --include 05-grow-root.sh /mount --install 'echo fdisk e2fsck resize2fs' /boot/"initramfs-grow_root-$(ls /boot/|grep initramfs|sed s/initramfs-//g)" $(ls /boot/|grep vmlinuz|sed s/vmlinuz-//g)
+dracut --force --include 05-grow-root.sh /mount --install 'echo awk grep fdisk sfdisk growpart partx e2fsck resize2fs' "$(ls /boot/initramfs-*)" $(ls /boot/|grep vmlinuz|sed s/vmlinuz-//g)
 rm -f 05-grow-root.sh
 
-tail -4 /boot/grub/grub.conf | sed s/initramfs/initramfs-grow_root/g| sed s/CentOS/ResizePartition/g | sed s/crashkernel=auto/crashkernel=0@0/g >> /boot/grub/grub.conf
+#tail -4 /boot/grub/grub.conf | sed s/initramfs/initramfs-grow_root/g| sed s/CentOS/ResizePartition/g | sed s/crashkernel=auto/crashkernel=0@0/g >> /boot/grub/grub.conf
 
 # let's run the kernel & initramfs that expands the partition only once
-echo "savedefault --default=1 --once" | grub --batch
+#echo "savedefault --default=1 --once" | grub --batch
 
 
 # Leave behind a build stamp
