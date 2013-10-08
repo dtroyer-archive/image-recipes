@@ -89,6 +89,8 @@ sed -i 's/name: cloud-user/name: centos\
 # Turn off additional services
 chkconfig postfix off
 
+# Enable networking at boot
+sed -i -e 's@^ONBOOT="no@ONBOOT="yes@' /etc/sysconfig/network-scripts/ifcfg-eth0
 
 # Tweak udev to not auto-gen virtual network devices
 cat <<EOF >/tmp/udev.patch.1
