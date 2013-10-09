@@ -1,7 +1,7 @@
 image-recipes
 =============
 
-Kickstart files and scripts for building minimal VM images.
+Kickstart files and scripts for building minimal VM images for OpenStack
 
 Features
 --------
@@ -10,7 +10,7 @@ The images created will have the following features:
 * minimal installs excluding the common 'base' groups
 * timezone is UTC
 * single root filesystem, grows to size of disk on first boot
-* cloud-init is installed
+* latest cloud-init is installed
 * rng-tools is loaded to take advantage of host virt entropy if available
 * build timestamp in /etc/.build
 
