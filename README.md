@@ -23,3 +23,5 @@ CentOS
 * EPEL repo is enabled
 * login name is 'centos'
 * postfix is installed (prereq for cronie) but not enabled
+* it's better if you run virt-sysprep -a centos-6-x86_64.dsk on your image after it's created
+* if you use image for openstack login as root with your private key
