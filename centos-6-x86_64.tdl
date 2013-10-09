@@ -1,0 +1,12 @@
+<template>
+  <name>centos-6-x86_64</name>
+  <os>
+    <name>CentOS-6</name>
+    <version>4</version>
+    <arch>x86_64</arch>
+    <install type='iso'>
+      <iso>http://ftp.astral.ro/distros/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso</iso>
+    </install>
+  </os>
+  <description>My CentOS 6.4 x86_64 template</description>
+</template>
