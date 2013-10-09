@@ -91,6 +91,8 @@ chkconfig postfix off
 
 # Enable eth0 on boot
 sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+cat /dev/null > /etc/udev/rules.d/70-persistent-net.rules
 
 # Tweak udev to not auto-gen virtual network devices
 cat <<EOF >/tmp/udev.patch.1
