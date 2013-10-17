@@ -1,4 +1,4 @@
-OpenStack-CentOS-image-creation-with-autoresize
+OpenStack CentOS image creation with autoresize
 =============
 
 Kickstart files and scripts for building minimal VM images for OpenStack
