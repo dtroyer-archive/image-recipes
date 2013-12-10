@@ -72,6 +72,10 @@ cloud-init
 # Cleanup after yum
 yum clean all
 
+# disable zeroconf to avoid adding of route to 169.254.169.254
+# this route caused that VM is not able to fetch metadata
+echo "NOZEROCONF=yes" >> /etc/sysconfig/network
+
 # Rename the default cloud-init user to 'centos'
 
 # cloud-init 0.6 config format
