@@ -16,7 +16,6 @@ url --url=http://mirrors.kernel.org/centos/6/os/x86_64
 repo --name=base --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
 repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
 repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
-repo --name=cloud-init --baseurl=http://repos.fedorapeople.org/repos/openstack/cloud-init/epel-6/
 
 # Common configuration
 rootpw --iscrypted $1$fakehash-bruteforcetocrackitnow
@@ -152,5 +151,19 @@ echo "savedefault --default=1 --once" | grub --batch
 
 # Leave behind a build stamp
 echo "build=$(date +%F.%T)" >/etc/.build
+
+#cloud-init 0.7.4 user_data.py
+for f in UserDataHandler.py user_data.py; do
+[ -f /usr/lib/python2.6/site-packages/cloudinit/$f ] || continue
+sed -i '
+/        msg = email.message_from_string(data)/c\
+        if isinstance(data, unicode):\
+            msg = email.message_from_string(data.encode('\'utf-8\''))\
+        else:\
+            msg = email.message_from_string(data)
+' /usr/lib/python2.6/site-packages/cloudinit/$f
+break
+done
+
 
 %end
