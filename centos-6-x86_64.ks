@@ -78,12 +78,79 @@ yum clean all
 
 # cloud-init 0.7 config format
 #sed -i 's/ name: cloud-user/ name: centos/g' /etc/cloud/cloud.cfg
-sed -i 's/name: cloud-user/name: centos\
-    lock_passwd: True\
-    gecos: CentOS\
-    groups: \[adm, audio, cdrom, dialout, floppy, video, dip\]\
-    sudo: \[\"ALL=(ALL) NOPASSWD:ALL\"\]\
-    shell: \/bin\/bash/' /etc/cloud/cloud.cfg
+#sed -i 's/name: cloud-user/name: centos\
+#    lock_passwd: True\
+#    gecos: CentOS\
+#    groups: \[adm, audio, cdrom, dialout, floppy, video, dip\]\
+#    sudo: \[\"ALL=(ALL) NOPASSWD:ALL\"\]\
+#    shell: \/bin\/bash/' /etc/cloud/cloud.cfg
+
+cat << EOF > /etc/cloud/cloud.cfg
+
+users:
+ - default
+
+disable_root: 1
+ssh_pwauth:   0
+
+locale_configfile: /etc/sysconfig/i18n
+mount_default_fields: [~, ~, 'auto', 'defaults,nofail', '0', '2']
+resize_rootfs_tmp: /dev
+ssh_deletekeys:   0
+ssh_genkeytypes:  ~
+syslog_fix_perms: ~
+
+cloud_init_modules:
+ - bootcmd
+ - write-files
+ - resizefs
+ - set_hostname
+ - update_hostname
+ - update_etc_hosts
+ - rsyslog
+ - users-groups
+ - ssh
+
+cloud_config_modules:
+ - mounts
+ - locale
+ - set-passwords
+ - timezone
+ - puppet
+ - chef
+ - salt-minion
+ - mcollective
+ - disable-ec2-metadata
+ - runcmd
+
+cloud_final_modules:
+ - rightscale_userdata
+ - scripts-per-once
+ - scripts-per-boot
+ - scripts-per-instance
+ - scripts-user
+ - ssh-authkey-fingerprints
+ - keys-to-console
+ - phone-home
+ - final-message
+
+system_info:
+  default_user:
+    name: cloud-user
+    lock_passwd: true
+    gecos: Cloud user
+    groups: [wheel, adm]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+  distro: rhel
+  paths:
+    cloud_dir: /var/lib/cloud
+    templates_dir: /etc/cloud/templates
+  ssh_svcname: sshd
+
+# vim:syntax=yaml
+
+EOF
 
 # Turn off additional services
 chkconfig postfix off
