@@ -1,0 +1,11 @@
+<template>
+  <name>centos-7-x86_64</name>
+  <os>
+    <name>CentOS-7</name>
+    <arch>x86_64</arch>
+    <install type='iso'>
+      <iso>http://ftp.astral.ro/distros/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso</iso>
+    </install>
+  </os>
+  <description>My CentOS 7 x86_64 template</description>
+</template>
