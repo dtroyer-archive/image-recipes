@@ -6,13 +6,6 @@ skipx
 cmdline
 install
 
-#version=DEVEL
-# Firewall configuration
-firewall --disabled
-repo --name="repo0" --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
-repo --name="repo1" --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
-repo --name="epel" --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
-
 
 # Root password
 rootpw --iscrypted --lock $1$2fakehash-bruteforcetocrackitnowalibaba
@@ -26,6 +19,14 @@ lang en_US.UTF-8
 selinux --enforcing
 # Installation logging level
 logging --level=info
+
+#version=DEVEL
+# Firewall configuration
+firewall --disabled
+repo --name="repo0" --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
+repo --name="repo1" --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
+repo --name="epel" --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
+
 # Halt after installation
 poweroff
 # System services
