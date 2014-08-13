@@ -44,11 +44,7 @@ zerombr
 # Partition clearing information
 clearpart --all --initlabel
 # Disk partitioning information
-part swap --asprimary --fstype="swap" --size=1024
-part /boot --fstype xfs --size=200
-part pv.01 --size=1 --grow
-volgroup rootvg01 pv.01
-logvol / --fstype xfs --name=lv01 --vgname=rootvg01 --size=1 --grow
+part / --size 100 --fstype ext4 --grow
 
 %post
 
