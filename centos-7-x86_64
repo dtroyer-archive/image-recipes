@@ -1,4 +1,4 @@
-#Kickstart file for CentOS 6.4 X86_64
+#Kickstart file for CentOS 7 X86_64
 
 # Basic kickstart bits
 text
