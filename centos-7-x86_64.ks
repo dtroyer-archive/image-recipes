@@ -122,7 +122,7 @@ rm -rf /root/anaconda-ks.cfg
 rm -rf /var/log/anaconda*
 %end
 
-%packages --nobase
+%packages --nobase --ignoremissing
 acpid
 attr
 audit
