@@ -1,5 +1,11 @@
 #Kickstart file for CentOS 6.4 X86_64
 
+# Basic kickstart bits
+text
+skipx
+cmdline
+install
+
 #version=DEVEL
 # Firewall configuration
 firewall --disabled
