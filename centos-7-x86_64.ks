@@ -38,7 +38,7 @@ timezone --isUtc UTC
 # Network information
 network --onboot=on --bootproto=dhcp
 # System bootloader configuration
-bootloader --append="console=ttyS0,115200n8 console=tty0" --location=mbr --driveorder="sda" --timeout=1
+bootloader --location=mbr --append="console=tty console=ttyS0 notsc"
 # Clear the Master Boot Record
 zerombr
 # Partition clearing information
