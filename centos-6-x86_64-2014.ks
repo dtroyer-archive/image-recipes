@@ -6,29 +6,28 @@ skipx
 cmdline
 install
 
+url --url=http://mirrors.kernel.org/centos/6/os/x86_64
 
-# Root password
-rootpw --iscrypted --lock $1$2fakehash-bruteforcetocrackitnowalibaba
-# System authorization information
-auth --useshadow --enablemd5 
-# System keyboard
-keyboard us
-# System language
+# Repositories
+repo --name=base --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
+repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
+repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
+
+# Common configuration
+rootpw --iscrypted $1$2fakehash-bruteforcetocrackitnowalibaba
 lang en_US.UTF-8
-# SELinux configuration
-selinux --enforcing
-# Installation logging level
-logging --level=info
-
-#version=DEVEL
-# Firewall configuration
+keyboard us
+timezone --utc UTC
+network --onboot=on --bootproto=dhcp
 firewall --disabled
-repo --name="repo0" --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
-repo --name="repo1" --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
-repo --name="epel" --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
+auth --useshadow --enablemd5
+firstboot --disable
+selinux --enforcing
 
 # Halt after installation
 poweroff
+
+
 # System services
 services --disabled="avahi-daemon,iscsi,iscsid,firstboot,kdump" --enabled="network,sshd,rsyslog,tuned"
 # System timezone
