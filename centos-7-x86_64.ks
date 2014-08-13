@@ -17,13 +17,15 @@ repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/beta/7/x86_64/
 rootpw --iscrypted $1$2fakehash-bruteforcetocrackitnowalibaba
 lang en_US.UTF-8
 keyboard us
-timezone --utc UTC
-network --onboot=on --bootproto=dhcp
+timezone UTC
+eula --agreed
 firewall --disabled
 selinux --disabled
+services --enabled=NetworkManager,sshd
+ignoredisk --only-use=sda
 auth --useshadow --enablemd5
 firstboot --disable
-eula --agreed
+
 
 # Halt after installation
 poweroff
@@ -123,6 +125,7 @@ rm -rf /var/log/anaconda*
 %end
 
 %packages --nobase --ignoremissing
+@core
 acpid
 attr
 audit
