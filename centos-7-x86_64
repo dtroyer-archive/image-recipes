@@ -39,9 +39,13 @@ bootloader --append="console=ttyS0,115200n8 console=tty0" --location=mbr --drive
 # Clear the Master Boot Record
 zerombr
 # Partition clearing information
-clearpart --all  
+clearpart --all --initlabel
 # Disk partitioning information
-part / --fstype="ext4" --size=1024
+part swap --asprimary --fstype="swap" --size=1024
+part /boot --fstype xfs --size=200
+part pv.01 --size=1 --grow
+volgroup rootvg01 pv.01
+logvol / --fstype xfs --name=lv01 --vgname=rootvg01 --size=1 --grow
 
 %post
 
@@ -125,13 +129,11 @@ authconfig
 basesystem
 bash
 cloud-init
-dracut-modules-growroot
 coreutils
 cpio
 cronie
 device-mapper
 dhclient
-dracut
 e2fsprogs
 efibootmgr
 filesystem
