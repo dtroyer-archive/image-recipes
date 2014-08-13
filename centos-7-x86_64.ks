@@ -20,9 +20,10 @@ keyboard us
 timezone --utc UTC
 network --onboot=on --bootproto=dhcp
 firewall --disabled
+selinux --disabled
 auth --useshadow --enablemd5
 firstboot --disable
-selinux --enforcing
+eula --agreed
 
 # Halt after installation
 poweroff
