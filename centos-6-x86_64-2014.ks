@@ -27,7 +27,7 @@ services --disabled="avahi-daemon,iscsi,iscsid,firstboot,kdump" --enabled="netwo
 # System timezone
 timezone --isUtc UTC
 # Network information
-network  --bootproto=dhcp --device=eth0 --onboot=on
+network --onboot=on --bootproto=dhcp
 # System bootloader configuration
 bootloader --append="console=ttyS0,115200n8 console=tty0" --location=mbr --driveorder="sda" --timeout=1
 # Clear the Master Boot Record
