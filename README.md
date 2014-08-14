@@ -17,6 +17,7 @@ The images created will have the following features:
 How to use
 ------
 * create image : oz-install -d3 -a centos-6-x86_64.ks -u centos-6-x86_64.tdl -x centos64-libvirt.xml
+ *               oz-install -d3 -u centos-7-x86_64.tdl -x centos-7-libvirt.xml
 * open centos64-libvirt.xml to see where the image has been created
 * run : virt-sysprep -a centos-6-x86_64.dsk on your image after it's created
 * convert .dsk to .qcow2 : qemu-img convert -f raw -O qcow2 centos-6-x86_64.dsk centos-6-x86_64.qcow2
