@@ -1,0 +1,76 @@
+<template>
+  <name>centOS-7-x86_64</name>
+  <os>
+    <name>RHEL-7</name>
+    <version>0</version>
+    <arch>x86_64</arch>
+    <install type='iso'>
+      <iso>http://ftp.astral.ro/distros/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso</iso>
+    </install>
+  </os>
+  <description>RHEL-7 x86_64</description>
+  <repositories>
+    <repository name='epel-7'>
+      <url>http://download.fedoraproject.org/pub/epel/beta/7/$basearch</url>
+    </repository>
+  </repositories>
+  <packages>
+    <package name='openssh-server'/>
+    <package name='openssh-clients'/>
+    <package name='cloud-init'/>
+    <package name='selinux-policy-targeted'/>
+  </packages>
+  <commands>
+   <command name='console'>
+# make sure firstboot doesn't start
+echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
+
+# bz705572
+ln -s /boot/grub/grub.conf /etc/grub.conf
+
+# bz688608
+sed -i 's|\(^PasswordAuthentication \)yes|\1no|' /etc/ssh/sshd_config
+
+# allow sudo powers to cloud-user
+echo -e 'cloud-user\tALL=(ALL)\tNOPASSWD: ALL' >> /etc/sudoers
+
+# bz983611
+echo "NOZEROCONF=yes" >> /etc/sysconfig/network
+
+# set virtual-guest as default profile for tuned
+echo "virtual-guest" > /etc/tune-profiles/active-profile
+
+#bz 1011013
+# set eth0 to recover from dhcp errors
+
+#bz912801
+# prevent udev rules from remapping nics
+touch /etc/udev/rules.d/75-persistent-net-generator.rules
+
+#setup getty on ttyS0
+
+# lock root password
+passwd -d root
+passwd -l root
+
+# clean up installation logs"
+rm -rf /etc/ssh/*key*
+rm -f /etc/udev/rules.d/*-persistent-*
+sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth0 
+sed -i '/UUID/d' /etc/sysconfig/network-scripts/ifcfg-eth0 
+rm -f /root/anaconda-ks.cfg
+rm -f /root/install.log
+rm -f /root/install.log.syslog
+find /var/log -type f -delete
+
+yum clean all
+rm -rf /var/log/yum.log
+rm -rf /var/lib/yum/*
+rm -rf /root/install.log
+rm -rf /root/install.log.syslog
+rm -rf /root/anaconda-ks.cfg
+rm -rf /var/log/anaconda*
+
+   </command>
+ </commands>
+</template>
