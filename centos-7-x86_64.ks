@@ -1,4 +1,4 @@
-#Kickstart file for CentOS 6.4 X86_64
+#Kickstart file for CentOS 7 X86_64
 
 # Basic kickstart bits
 text
@@ -6,23 +6,26 @@ skipx
 cmdline
 install
 
-url --url=http://mirrors.kernel.org/centos/6/os/x86_64
+url --url=http://mirrors.kernel.org/centos/7/os/x86_64
 
 # Repositories
-repo --name=base --baseurl=http://mirrors.kernel.org/centos/6/os/x86_64
-repo --name=updates --baseurl=http://mirrors.kernel.org/centos/6/updates/x86_64
-repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/6/x86_64
+repo --name=base --baseurl=http://mirrors.kernel.org/centos/7/os/x86_64
+repo --name=updates --baseurl=http://mirrors.kernel.org/centos/7/updates/x86_64
+repo --name=epel --baseurl=http://mirrors.kernel.org/fedora-epel/beta/7/x86_64/
 
 # Common configuration
 rootpw --iscrypted $1$2fakehash-bruteforcetocrackitnowalibaba
 lang en_US.UTF-8
 keyboard us
-timezone --utc UTC
-network --onboot=on --bootproto=dhcp
+timezone UTC
+eula --agreed
 firewall --disabled
+selinux --disabled
+services --enabled=NetworkManager,sshd
+ignoredisk --only-use=sda
 auth --useshadow --enablemd5
 firstboot --disable
-selinux --enforcing
+
 
 # Halt after installation
 poweroff
@@ -35,13 +38,13 @@ timezone --isUtc UTC
 # Network information
 network --onboot=on --bootproto=dhcp
 # System bootloader configuration
-bootloader --append="console=ttyS0,115200n8 console=tty0" --location=mbr --driveorder="sda" --timeout=1
+bootloader --location=mbr --append="console=tty console=ttyS0 notsc"
 # Clear the Master Boot Record
 zerombr
 # Partition clearing information
-clearpart --all  
+clearpart --all --initlabel
 # Disk partitioning information
-part / --fstype="ext4" --size=1024
+part / --size 100 --fstype ext4 --grow
 
 %post
 
@@ -117,7 +120,8 @@ rm -rf /root/anaconda-ks.cfg
 rm -rf /var/log/anaconda*
 %end
 
-%packages --nobase
+%packages --nobase --ignoremissing
+@core
 acpid
 attr
 audit
@@ -125,13 +129,11 @@ authconfig
 basesystem
 bash
 cloud-init
-dracut-modules-growroot
 coreutils
 cpio
 cronie
 device-mapper
 dhclient
-dracut
 e2fsprogs
 efibootmgr
 filesystem
